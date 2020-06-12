@@ -20,7 +20,7 @@ $fieldOptions2 = [
 ?>
 
 <div>
-	<h1>信息管理系统</h1>
+	<h1>后台登录</h1>
 </div>
 <div>
 	<?php $form = ActiveForm::begin(['id' => 'login-form','options'=>['class' => 'layui-form'], 'enableClientValidation' => false]); ?>

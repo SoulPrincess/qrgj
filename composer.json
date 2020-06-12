@@ -23,7 +23,9 @@
         "kartik-v/yii2-editable": "@dev",
         "kucha/ueditor": "*",
         "phpoffice/phpexcel": "^1.8",
-        "jtcczu/yii2-applet": "^1.1"
+        "jtcczu/yii2-applet": "^1.1",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-touchspin": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

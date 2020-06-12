@@ -2,19 +2,19 @@
 /**
  * Created by PhpStorm.
  * User: LHP
- * Date: 2020/6/3
- * Time: 10:59
+ * Date: 2020/6/11
+ * Time: 09:45
  */
 namespace qingrui\controllers;
-use qingrui\models\Area;
 use rbac\components\Helper;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii;
 use yii\web\NotFoundHttpException;
-use qingrui\models\Customer;
-use qingrui\models\searchs\Customer as CustomerSearch;
-class CustomerController extends Controller
+use qingrui\models\StaffLog;
+use qingrui\models\searchs\StaffLog as StaffLogSearch;
+use yii\helpers\Json;
+class StaffLogController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,16 +30,31 @@ class CustomerController extends Controller
             ],
         ];
     }
+
     /*
-     * 客户列表页
+     * 员工日志列表页
      * @author：lhp
      * @time：2020/6/3
      * */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch;
+        $searchModel = new StaffLogSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
+        if (Yii::$app->request->post('hasEditable')) {
+            $id = Yii::$app->request->post('editableKey');
+            $model = StaffLog::findOne(['id' => $id]);
+            $out = Json::encode(['output'=>'', 'message'=>'']);
+            $posted = current($_POST['StaffLog']);
+            $post = ['StaffLog' => $posted];
+            if ($model->load($post)) {
+                $model->save();
+                $output = '';
+                isset($posted['remark']) && $output = $model->remark;
+            }
+            $out = Json::encode(['output'=>$output, 'message'=>'']);
+            echo $out;
+            return;
+        }
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -47,7 +62,7 @@ class CustomerController extends Controller
     }
 
     /*
-     * 客户视图
+     * 员工日志视图
      * @author：lhp
      * @time：2020/6/3
      * */
@@ -58,13 +73,13 @@ class CustomerController extends Controller
         ]);
     }
     /*
-     * 客户新增
+     * 员工日志新增
      * @author：lhp
      * @time：2020/6/3
      * */
     public function actionCreate()
     {
-        $model = new Customer;
+        $model = new StaffLog;
         if(Yii::$app->request->post()){
             $post=Yii::$app->request->post();
             if ($model->load($post) && $model->save()) {
@@ -79,7 +94,7 @@ class CustomerController extends Controller
     }
 
     /*
-      * 客户更新
+      * 员工日志更新
       * @author：lhp
       * @time：2020/6/3
       * */
@@ -97,7 +112,7 @@ class CustomerController extends Controller
     }
 
     /*
-     * 客户删除一条
+     * 员工日志删除一条
      * @author：lhp
      * @time：2020/6/3
      * */
@@ -120,7 +135,7 @@ class CustomerController extends Controller
     public function actionDeleteAll(){
         $data = Yii::$app->request->post();
         if($data){
-            $model = new Customer;
+            $model = new StaffLog;
             $count = $model->deleteAll(["in","id",$data['keys']]);
             if($count>0){
                 Helper::invalidate();
@@ -134,13 +149,13 @@ class CustomerController extends Controller
         }
     }
     /*
-     * 客户查询
+     * 员工日志查询
      * @author：lhp
      * @time：2020/6/3
      * */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = StaffLog::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('请求的页面不存在!');
@@ -148,7 +163,7 @@ class CustomerController extends Controller
     }
 
     /*
-     * 客户状态
+     * 员工日志状态
      * @author：lhp
      * @time：2020/6/3
      * */
@@ -177,20 +192,6 @@ class CustomerController extends Controller
             ];
             return json_encode($arr);
         }
-    }
-
-    /*
-     * 二级联动城市
-     * @author：lhp
-     * @time：2020/6/11
-     * */
-    public function actionCity()
-    {
-        $pid = (int)Yii::$app->request->post('pid');
-        $model  = new Area();
-        Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
-        $list= $model->getCityList($pid);
-        return $list;
     }
 
 

@@ -79,23 +79,12 @@ layui.config({
         var index = layui.layer.open({
             title : "查看客户",
             type: 2,
-            area: ['80%', '500px'],
+            area: ['600px', '500px'],
             content : [href],
         });	
         return false;
 	});
-    //查看简历
-    $("body").on("click",".layui-default-resume-view",function(){  //查看
-        var href = $(this).attr("href");
-        console.log(href);
-        var index = layui.layer.open({
-            title : "查看简历",
-            type: 2,
-            area: ['80%', '500px'],
-            content : [href],
-        });
-        return false;
-    });
+    
     $("body").on("click",".layui-default-update",function(){  //修改
         var href = $(this).attr("href");
         console.log(href);

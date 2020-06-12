@@ -79,7 +79,7 @@ layui.config({
         var index = layui.layer.open({
             title : "查看客户",
             type: 2,
-            area: ['600px', '500px'],
+            area: ['80%', '500px'],
             content : [href],
         });	
         return false;

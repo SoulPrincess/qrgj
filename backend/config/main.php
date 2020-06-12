@@ -25,12 +25,6 @@ return [
         "backup" => [        
             'class' => 'backup\Module',
         ],
-        "content"=>[
-            'class'=>'content\Module'
-        ],
-        'official' => [
-            'class' => 'official\Module'
-        ],
         'gridview' => [
             'class' => '\kartik\grid\Module'
         ],
@@ -42,8 +36,6 @@ return [
         '@rbac' => '@backend/modules/rbac',
 		'@system' => '@backend/modules/system',
 		'@backup' => '@backend/modules/backup',
-		'@content' => '@backend/modules/content',
-		'@official' => '@backend/modules/official',
 		'@qingrui' => '@backend/modules/qingrui',
     ],
     'components' => [

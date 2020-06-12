@@ -5,8 +5,15 @@ use yii\widgets\ActiveForm;
 
 $this->registerJs($this->render('js/upload.js'));
 ?>
-
-<div class="customer-search">
+<style>
+    .form-group{
+        margin-top:10px;
+    }
+    .layui-input{
+        autocomplete:off
+    }
+</style>
+<div class="resume-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,15 +24,15 @@ $this->registerJs($this->render('js/upload.js'));
 	   ],
     ]); ?>
 
-<!--    --><?//= $form->field($model, 'name')->textInput(['class'=>'layui-input search_input'])->label('客户名称') ?>
-<!--    --><?//= $form->field($model, 'post')->textInput(['class'=>'layui-input search_input'])->label('职位') ?>
-<!--    --><?//= $form->field($model, 'username')->textInput(['class'=>'layui-input search_input'])->label('操作用户') ?>
-<!---->
-<!--    --><?//= $form->field($model, 'status')->dropDownList(['1'=>'是','2'=>'否'],['prompt'=>'请选择类别','style'=>'display:none;'])->label('是否显示') ?>
-<!---->
-<!--    --><?//= $form->field($model, 'sex')->dropDownList(['1'=>'男','2'=>'女','3'=>'未知'],['prompt'=>'请选择性别','style'=>'display:none'])->label('性别') ?>
-
-    <div class="form-group" style="margin-top: 10px">
+    <?= $form->field($model, 'name')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('姓名') ?>
+    <?= $form->field($model, 'telphone')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('联系方式') ?>
+    <?= $form->field($model, 'sex')->dropDownList(['1'=>'男','2'=>'女','3'=>'未知'],['prompt'=>'请选择性别','style'=>'display:none'])->label('性别') ?>
+    <?= $form->field($model, 'current_city')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('目前所在城市') ?>
+    <?= $form->field($model, 'current_company')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('目前所在公司') ?>
+    <?= $form->field($model, 'current_branch')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('目前所在部门') ?>
+    <?= $form->field($model, 'current_post')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('职位名称') ?>
+    <?= $form->field($model, 'username')->textInput(['class'=>'layui-input search_input','autocomplete'=>'off'])->label('操作用户') ?>
+    <div class="form-group" style="display:block;">
         <?= Html::submitButton('查找', ['class' => 'layui-btn layui-btn-normal']) ?>
         <?= Html::button('添加', ['class' => 'layui-btn layui-default-add']) ?>
 		<?= Html::button('批量删除', ['class' => 'layui-btn layui-btn-danger layui-default-delete-all']) ?>

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use backend\assets\LayuiAsset;
 use yii\helpers\Url;
 LayuiAsset::register($this);
@@ -10,7 +10,7 @@ $this->registerJs($this->render('js/index.js'));
 <blockquote class="layui-elem-quote" style="font-size: 14px;">
 	<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 </blockquote>
-<div class="layui-form resume-index">
+<div class="layui-form staff-log-index">
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,46 +31,41 @@ $this->registerJs($this->render('js/index.js'));
 				'headerOptions' => ['width'=>'50','style'=> 'text-align: center;'],
 				'contentOptions' => ['style'=> 'text-align: center;']
 			],
-//            'name',
-            [
-                    'attribute'=>'name',
-                    'format' => 'raw',
-                    'value' => function ($model) {
-                        return Html::a($model->name,Url::to(['resume-view','id'=>$model->id]), ['title' => '查看简历','class' => "layui-default-resume-view"]);
-                        }
-            ],
-            [
-                'attribute' => 'sex',
-                'format' => 'html',
-                'value' => function($model) {
-                    return $model->sex==2?'<font color="red">女</font>':($model->sex==3?'<font color="gray">未知</font>':'<font color="green">男</font>');
-                },
-                'contentOptions' => ['style'=> 'text-align: center;','id'=>'status_1'],
-                'headerOptions' => [
-                    'style'=> 'text-align: center;'
-                ],
-                'label' => '性别',
-            ],
-            'telphone',
-            'wechat_id',
-            'email',
-            'current_city',
-            'current_company',
-            'current_branch',
-            'current_post',
-            'exchange',
+            ['class' => 'yii\grid\SerialColumn'],//显示行号
             'admin.username:text:操作用户',
+            'customer.company_name:text:企业名称',
+            'customer.name:text:联系人',
+            'customer.contact:text:联系方式',
+            [
+                'attribute' => 'remark',
+                'class'=>'kartik\grid\EditableColumn',
+                'editableOptions'=>[
+                    'asPopover' => true,
+                ],
+            ],
+//            [
+//                'attribute' => 'status',
+//                'format' => 'html',
+//                'value' => function($model) {
+//                    return $model->status==2?'<font color="red">否</font>':'<font color="green">是</font>';
+//                },
+//                'contentOptions' => ['style'=> 'text-align: center;','id'=>'status_1'],
+//                'headerOptions' => [
+//                    'width' => '10%',
+//                    'style'=> 'text-align: center;'
+//                ],
+//                'label' => '状态',
+//            ],
             [
                 'attribute'=>'created_at',
                 'value'=>function ($model){
-                    return $model->created_at==''?'-': date('Y-m-d H:i:s',$model->created_at);
+                    return date('Y-m-d H:i:s',$model->created_at);
                 }
             ],
             [
                 'attribute'=>'updated_at',
-                'label'=>'修改时间',
                 'value'=>function ($model){
-                    return $model->updated_at==''?'-':date('Y-m-d H:i:s',$model->updated_at);
+                    return date('Y-m-d H:i:s',$model->updated_at);
                 }
             ],
 

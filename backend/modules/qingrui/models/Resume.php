@@ -42,7 +42,7 @@ class Resume extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['sex','age','native','politic','ethnic','major','school','education','idcard','birthday','marriage','post','telphone','email','address','resume_photo','expected_pay','worktime','major_backg','job_intention','work_experience','evaluation','other','created_at','updated_at','remark'], 'default'],
+            [['sex','age','native','politic','ethnic','major','school','education','idcard','birthday','marriage','post','telphone','email','address','resume_photo','expected_pay','worktime','major_backg','job_intention','work_experience','evaluation','other','created_at','updated_at','remark','current_city','current_company','current_branch','current_post','exchange','wechat_id'], 'default'],
             [['uid','username'],'safe']
         ];
     }
@@ -67,7 +67,7 @@ class Resume extends \yii\db\ActiveRecord
             'birthday' => '出生日期',
             'marriage' => '婚姻状况',
             'post' => '职位',
-            'telphone' => '联系电话',
+            'telphone' => '联系方式',
             'email' => '邮箱',
             'address' => '地址',
             'resume_photo' => '简历图片',
@@ -81,6 +81,12 @@ class Resume extends \yii\db\ActiveRecord
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
             'remark' => '备注',
+            'current_city' => '目前所在城市',
+            'current_company' => '目前所在公司',
+            'current_branch' => '目前所在部门',
+            'current_post' => '职位名称',
+            'exchange' => '沟通结果',
+            'wechat_id' => '微信号',
         ];
     }
     public function beforeSave($insert)
@@ -105,4 +111,64 @@ class Resume extends \yii\db\ActiveRecord
         $model = new $this->userClassName;
         return $this->hasOne($model::className(), ['id' => 'uid']);
     }
+
+    /*简历导入查重
+     *@author:LHP
+    * @time:2020-6-8
+    * */
+    public function resumeRepeat()
+    {
+        $query = new yii\db\Query();
+        $result = $query->select(['name','sex','address','telphone','school','education','post','email'])
+            ->from(['t'=>'t_resume'])
+            ->all();
+        foreach ($result as $v) {//简历名称
+            $result['name'][] = $v['name'];
+
+            if ($v['id']) {
+                $result[$v['name']] = $v['id'];
+            }
+        }
+        return $result;
+    }
+
+    public function resumeImport($param = [])
+    {
+        $data=[
+            'name'=>$param[0],
+            'sex'=>$param[1],
+            'telphone' => $param[2],
+            'wechat_id' => $param[3],
+            'email' => $param[4],
+            'current_city' => $param[5],
+            'current_company' => $param[6],
+            'current_branch' => $param[7],
+            'current_post' => $param[8],
+            'exchange' => $param[9],
+            'created_at' =>time(),
+            'updated_at' =>time(),
+            'uid'=>Yii::$app->user->identity->id
+        ];
+        $result=self::addResume($data);
+        return $result;
+    }
+
+    /*简历导入数据库
+   *$param array
+   *@time:2020-6-8
+   *@author:Lhp
+   */
+    public function addResume($param=[]){
+        $connection=Yii::$app->db;
+        $transaction=$connection->beginTransaction();
+        try{
+            $connection->createCommand()->insert('t_resume',$param)->execute();
+            $transaction->commit();
+            return true;
+        }catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+    }
+
 }

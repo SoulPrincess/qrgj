@@ -41,12 +41,12 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['post'], 'default'],
+            [['name','company_name'], 'required'],
+            [['post','contract_end','contract_deadline','province_id','city_id'], 'default'],
             [['status','sex','created_at','updated_at','contact'], 'integer'],
             ['contact','match','pattern'=>'/^[1][34578][0-9]{9}$/'],
             ['email','match','pattern'=>'/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/'],
-            [['uid','username'],'safe']
+            [['uid','username','contact'],'safe']
         ];
     }
 
@@ -57,7 +57,12 @@ class Customer extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => '客户姓名',
+            'company_name' => '企业名称',
+            'province_id' => '省份',
+            'city_id' => '城市',
+            'contract_end' => '合同截止日期',
+            'contract_deadline' => '合同期限',
+            'name' => '联系人',
             'contact' => '联系方式',
             'sex'=>'性别',
             'email' => '邮箱',
@@ -91,5 +96,37 @@ class Customer extends \yii\db\ActiveRecord
     {
         $model = new $this->userClassName;
         return $this->hasOne($model::className(), ['id' => 'uid']);
+    }
+    /**
+     * Get admin name
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProvince()
+    {
+        return $this->hasOne(Area::className(), ['id' => 'province_id']);
+    }
+    /**
+     * Get admin name
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(Area::className(), ['id' => 'city_id']);
+    }
+    /**
+     * 获取对应人的客户
+     * @time:2020-6-11
+     * @author:lhp
+     */
+    public static function dropDown()
+    {
+        $data = self::find()
+            ->select(['id','company_name'])
+            ->where(['uid'=>Yii::$app->user->identity->id])
+            ->orderBy('updated_at desc')
+            ->asArray()
+            ->all();
+        $data_list = yii\helpers\ArrayHelper::map($data, 'id', 'company_name');
+        return $data_list;
     }
 }

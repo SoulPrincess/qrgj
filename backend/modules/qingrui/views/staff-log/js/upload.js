@@ -42,7 +42,7 @@ layui.use(['upload','layer','layedit'], function(){
     /*excel导入*/
     upload.render({
         elem: '#goods_import',
-        url: "<?=yii\helpers\Url::to(['resume/import'])?>",
+        url: "<?=yii\helpers\Url::to(['/tools/import'])?>",
         method: 'post',
         type:'file',
         accept: 'file', //允许上传的文件类型
@@ -53,21 +53,14 @@ layui.use(['upload','layer','layedit'], function(){
         done: function(res, index, upload){ //上传后的回调
             layer.closeAll('loading');
             if(res.code==200){
-                layer.confirm(res.msg, {
-                    btn: ['确定'] //按钮
-                }, function(index){
-                    layer.close(index);
-                    location.reload();
-                });
+                layer.msg(res.msg+',错误条数：'+res.error_cnt);
             }else{
-                layer.confirm(res.msg, {
-                    btn: ['确定'] //按钮
-                }, function(index){
-                    layer.close(index);
-                        // location.reload();
-                });
-                // layer.alert(res.msg);
+                layer.msg(res.msg);
             }
+            setTimeout(function(){
+                layer.close(index);
+                location.reload();
+            },1000);
         },
     });
 });

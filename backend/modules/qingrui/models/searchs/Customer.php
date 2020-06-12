@@ -19,7 +19,7 @@ class Customer extends CustomerModel
     public function rules()
     {
         return [
-            [['name','post','sex','status','username'], 'safe'],
+            [['name','post','sex','status','username','province_id','city_id'], 'safe'],
         ];
     }
     /**
@@ -61,6 +61,8 @@ class Customer extends CustomerModel
         $query->andFilterWhere(['c.id' => $this->id]);
         $query->andFilterWhere(['c.status' => $this->status]);
         $query->andFilterWhere(['c.sex' => $this->sex]);
+        $query->andFilterWhere(['c.province_id' => $this->province_id]);
+        $query->andFilterWhere(['c.city_id' => $this->city_id]);
         $query->andFilterWhere(['like', 'c.name', $this->name]);
         $query->andFilterWhere(['like', 'c.post', $this->post]);
         $query->andFilterWhere(['like', 'u.username', $this->username]);
