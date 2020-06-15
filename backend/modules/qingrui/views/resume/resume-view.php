@@ -27,9 +27,15 @@ $this->registerJs($this->render('js/upload.js'));
         width:50%;
         display: inline-block
     }
-    #resume-birthday{
+    #resume-birthday-kvdate{
+        float:left;
         width:50%;
-        /*display: inline-block*/
+        margin-bottom: 15px;
+        margin-top: -10px;
+    }
+    .field-resume-birthday .control-label{
+        display:block;
+        float:left;
     }
 </style>
 <div class="resume-form create_box">
@@ -47,10 +53,11 @@ $this->registerJs($this->render('js/upload.js'));
         </div>
         <div class="layui-col-xs6">
             <?= $form->field($model, 'birthday')->widget(\kartik\date\DatePicker::classname(), ['removeButton' => false,'pluginOptions' => [
-                    'autoclose'=>true,
-                    'todayHighlight' => true,
-                    'format' => 'yyyy-mm-dd'
-                ]]);?>
+                'autoclose'=>true,
+                'todayHighlight' => true,
+                'format' => 'yyyy-mm-dd',
+
+            ]]);?>
         </div>
         <div class="layui-col-xs6">
             <?= $form->field($model, 'wechat_id')->textInput(['class'=>'layui-input search_input'])?>
