@@ -46,7 +46,7 @@ class Customer extends \yii\db\ActiveRecord
             [['status','sex','created_at','updated_at','contact'], 'integer'],
             ['contact','match','pattern'=>'/^[1][34578][0-9]{9}$/'],
             ['email','match','pattern'=>'/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/'],
-            [['uid','username','contact'],'safe']
+            [['admin_id','username','contact'],'safe']
         ];
     }
 
@@ -68,7 +68,7 @@ class Customer extends \yii\db\ActiveRecord
             'email' => '邮箱',
             'post' => '职位',
             'status' => '状态',
-            'uid' => '用户id',
+            'admin_id' => '用户id',
             'username' => '用户名称',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
@@ -81,7 +81,7 @@ class Customer extends \yii\db\ActiveRecord
         {
             if($this->isNewRecord)
             {
-                $this->uid=Yii::$app->user->identity->id;
+                $this->admin_id=Yii::$app->user->identity->id;
             }
             return true;
         }
@@ -95,7 +95,7 @@ class Customer extends \yii\db\ActiveRecord
     public function getAdmin()
     {
         $model = new $this->userClassName;
-        return $this->hasOne($model::className(), ['id' => 'uid']);
+        return $this->hasOne($model::className(), ['id' => 'admin_id']);
     }
     /**
      * Get admin name
@@ -122,7 +122,7 @@ class Customer extends \yii\db\ActiveRecord
     {
         $data = self::find()
             ->select(['id','company_name'])
-            ->where(['uid'=>Yii::$app->user->identity->id])
+            ->where(['admin_id'=>Yii::$app->user->identity->id])
             ->orderBy('updated_at desc')
             ->asArray()
             ->all();

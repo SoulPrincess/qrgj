@@ -38,7 +38,12 @@ class CustomerController extends Controller
     public function actionIndex()
     {
         $searchModel = new CustomerSearch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if(Yii::$app->user->identity->id==Yii::$app->params['SUPER_ADMIN']){
+            $where=[];
+        }else{
+            $where=['admin_id'=>Yii::$app->user->identity->id];
+        }
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams(),$where);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,

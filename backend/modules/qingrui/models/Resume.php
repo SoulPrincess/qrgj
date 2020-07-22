@@ -13,6 +13,23 @@ class Resume extends \yii\db\ActiveRecord
 {
     public $username;
     public $userClassName;
+    public $school_name;
+    public $start_time;
+    public $end_time;
+    public $major;
+    public $work_name;
+    public $xueli=[
+        '小学'=>'小学',
+        '初中'=>'初中',
+        '中专/高中'=>'中专/高中',
+        '大专'=>'大专',
+        '本科'=>'本科',
+        '硕士'=>'硕士',
+        '博士'=>'博士',
+        '博士后'=>'博士后',
+        'MBA'=>'MBA',
+        '其他'=>'其他',
+    ];
     /**
      * @inheritdoc
      */
@@ -42,8 +59,8 @@ class Resume extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['sex','age','native','politic','ethnic','major','school','education','idcard','birthday','marriage','post','telphone','email','address','resume_photo','expected_pay','worktime','major_backg','job_intention','work_experience','evaluation','other','created_at','updated_at','remark','current_city','current_company','current_branch','current_post','exchange','wechat_id'], 'default'],
-            [['uid','username'],'safe']
+                [['sex','age','native','politic','ethnic','major','school','education','idcard','birthday','marriage','post','telphone','email','address','resume_photo','expected_pay','worktime','major_backg','job_intention','work_experience','evaluation','other','created_at','updated_at','remark','current_city','current_company','current_branch','current_post','exchange','wechat_id','current_state','expected_trade','expected_post','expected_city','current_money'], 'default'],
+            [['admin_id','username','school_name','start_time','end_time','major','work_time','language','skill','certificate','work_name'],'safe']
         ];
     }
 
@@ -71,7 +88,7 @@ class Resume extends \yii\db\ActiveRecord
             'email' => '邮箱',
             'address' => '地址',
             'resume_photo' => '简历图片',
-            'expected_pay' => '期望薪资',
+            'expected_pay' => '期望薪资(k)',
             'worktime' => '工作时间',
             'major_backg' => '专业背景',
             'job_intention' => '求职意向',
@@ -87,6 +104,19 @@ class Resume extends \yii\db\ActiveRecord
             'current_post' => '职位名称',
             'exchange' => '沟通结果',
             'wechat_id' => '微信号',
+            'current_state' => '目前状态',
+            'expected_trade' => '期望行业',
+            'expected_post' => '期望职位',
+            'expected_city' => '期望城市',
+            'current_money' => '当前月薪(k)',
+            'school_name' => '学校',
+            'start_time' => '开始时间',
+            'end_time' => '结束时间',
+            'language'=>'语言能力',
+            'skill'=>'技能',
+            'certificate'=>'证书',
+            'work_name'=>'企业名称'
+//            'education' => '学历',
         ];
     }
     public function beforeSave($insert)
@@ -95,7 +125,7 @@ class Resume extends \yii\db\ActiveRecord
         {
             if($this->isNewRecord)
             {
-                $this->uid=Yii::$app->user->identity->id;
+                $this->admin_id=Yii::$app->user->identity->id;
             }
             return true;
         }
@@ -109,9 +139,12 @@ class Resume extends \yii\db\ActiveRecord
     public function getAdmin()
     {
         $model = new $this->userClassName;
-        return $this->hasOne($model::className(), ['id' => 'uid']);
+        return $this->hasOne($model::className(), ['id' => 'admin_id']);
     }
-
+//    public function getSchool()
+//    {
+//        return $this->hasMany(ResumeSchool::className(), ['id' => 'resume_id']);
+//    }
     /*简历导入查重
      *@author:LHP
     * @time:2020-6-8
@@ -147,7 +180,7 @@ class Resume extends \yii\db\ActiveRecord
             'exchange' => $param[9],
             'created_at' =>time(),
             'updated_at' =>time(),
-            'uid'=>Yii::$app->user->identity->id
+            'admin_id'=>Yii::$app->user->identity->id
         ];
         $result=self::addResume($data);
         return $result;

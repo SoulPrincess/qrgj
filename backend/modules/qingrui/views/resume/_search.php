@@ -37,6 +37,10 @@ $this->registerJs($this->render('js/upload.js'));
         <?= Html::button('添加', ['class' => 'layui-btn layui-default-add']) ?>
 		<?= Html::button('批量删除', ['class' => 'layui-btn layui-btn-danger layui-default-delete-all']) ?>
         <?= Html::button("<i class='layui-icon'>&#xe67c;</i>批量导入", ['class' => 'layui-btn layui-btn-normal layui-default-import','id'=>'goods_import']) ?>
+        <?=
+        Html::a('下载导入模板','http://www.qrgj.com/uploads/default_template.xls', ['class' => "layui-btn layui-btn-normal layui-btn-xs"]);
+        ?>
+
     </div>
 
     <?php ActiveForm::end(); ?>

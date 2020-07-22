@@ -8,9 +8,9 @@ layui.config({
 	//添加
     $(".layui-default-add").click(function(){
         var index = layui.layer.open({
-            title : "添加客户",
+            title : "添加简历",
             type : 2,
-            area: ['80%', '500px'],
+            area: ['80%', '90%'],
             content : ["<?= yii\helpers\Url::to(['create']); ?>"],
             end: function () {
                 location.reload();
@@ -47,7 +47,7 @@ layui.config({
 	            },800);
 	        });
 		}else{
-			layer.msg("请选择需要删除的客户");
+			layer.msg("请选择需要删除的简历");
 		}
 	});
 
@@ -77,9 +77,9 @@ layui.config({
         var href = $(this).attr("href");
         console.log(href);
         var index = layui.layer.open({
-            title : "查看客户",
+            title : "查看简历",
             type: 2,
-            area: ['80%', '500px'],
+            area: ['80%', '90%'],
             content : [href],
         });	
         return false;
@@ -89,9 +89,9 @@ layui.config({
         var href = $(this).attr("href");
         console.log(href);
         var index = layui.layer.open({
-            title : "查看简历",
+            title : "查看个人简历",
             type: 2,
-            area: ['80%', '500px'],
+            area: ['80%', '90%'],
             content : [href],
         });
         return false;
@@ -100,9 +100,9 @@ layui.config({
         var href = $(this).attr("href");
         console.log(href);
         var index = layui.layer.open({
-            title : "修改客户",
+            title : "修改简历",
             type : 2,
-            area: ['80%', '500px'],
+            area: ['80%', '90%'],
             content : [href],
             success : function(layero, index){
                 setTimeout(function(){
@@ -120,7 +120,7 @@ layui.config({
 
 	$("body").on("click",".layui-default-delete",function(){  //删除
         var href = $(this).attr("href");
-		layer.confirm('确定删除此客户吗？',{icon:3, title:'提示信息'},function(index){
+		layer.confirm('确定删除此简历吗？',{icon:3, title:'提示信息'},function(index){
             $.post(href,function(data){
                 if(data.code===200){
                     layer.msg(data.msg);
@@ -142,7 +142,108 @@ layui.config({
 		});
         return false;
 	});
-
+    $("body").on("click",".resume_school",function(){  //教育经历删除
+        var href = $(this).attr("href");
+        layer.confirm('确定删除此教育经历吗？',{icon:3, title:'提示信息'},function(index){
+            $.post(href,function(data){
+                if(data.code===200){
+                    layer.msg(data.msg);
+                    layer.close(index);
+                    setTimeout(function(){
+                        location.reload();
+                    },500);
+                }else{
+                    layer.close(index);
+                    layer.msg(data.msg);
+                }
+            },"json").fail(function(a,b,c){
+                if(a.status==403){
+                    layer.msg('没有权限');
+                }else{
+                    layer.msg('系统错误');
+                }
+            });
+        });
+        return false;
+    });
+    $("body").on("click",".work_delete",function(){  //教育经历删除
+        var href = $(this).attr("href");
+        layer.confirm('确定删除此工作经历吗？',{icon:3, title:'提示信息'},function(index){
+            $.post(href,function(data){
+                if(data.code===200){
+                    layer.msg(data.msg);
+                    layer.close(index);
+                    setTimeout(function(){
+                        location.reload();
+                    },500);
+                }else{
+                    layer.close(index);
+                    layer.msg(data.msg);
+                }
+            },"json").fail(function(a,b,c){
+                if(a.status==403){
+                    layer.msg('没有权限');
+                }else{
+                    layer.msg('系统错误');
+                }
+            });
+        });
+        return false;
+    });
+    $("body").on("click",".project_delete",function(){  //教育经历删除
+        var href = $(this).attr("href");
+        layer.confirm('确定删除此项目经历吗？',{icon:3, title:'提示信息'},function(index){
+            $.post(href,function(data){
+                if(data.code===200){
+                    layer.msg(data.msg);
+                    layer.close(index);
+                    setTimeout(function(){
+                        location.reload();
+                    },500);
+                }else{
+                    layer.close(index);
+                    layer.msg(data.msg);
+                }
+            },"json").fail(function(a,b,c){
+                if(a.status==403){
+                    layer.msg('没有权限');
+                }else{
+                    layer.msg('系统错误');
+                }
+            });
+        });
+        return false;
+    });
+        $("body").on('beforeSubmit', 'form#www', function () {
+            var form = $(this);
+            //返回错误的表单信息
+            if (form.find('.has-error').length)
+            {
+                return false;
+            }
+            //表单提交
+            $.ajax({
+                url    : form.attr('action'),
+                type   : 'post',
+                dataType:"JSON",
+                data   : form.serialize(),
+                success: function (data){
+                    if(data.code==200){
+                        layer.msg(data.msg);
+                        setTimeout(function(){
+                            location.reload();
+                        },500);
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error  : function (){
+                    alert('系统错误');
+                    return false;
+                }
+            });
+            return false;
+        });
     $("body").on("click",".layui-default-status",function(){
         var is_status =$('#status_1').text();
         var status;

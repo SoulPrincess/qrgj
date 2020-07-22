@@ -22,8 +22,25 @@ return[
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
+            'useFileTransport' =>false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.163.com',  //每种邮箱的host配置不一样
+                'username' => 'lhp123456l@163.com', // 邮箱账号
+                'password' => 'ZSJAOUKRQBERRRES', // 授权码
+                'port' => '25',
+                'encryption' => 'tls',
+
+            ],
+            'messageConfig'=>[
+                'charset'=>'UTF-8',
+                'from'=>['lhp123456l@163.com'=>'admin']
+            ],
         ],
+//        'mailer' => [
+//            'class' => 'yii\swiftmailer\Mailer',
+//            'viewPath' => '@common/mail',
+//        ],
         //短信组件，采用短信
         'sms'=>[
             'class'=>'common\components\sms'

@@ -39,7 +39,12 @@ class StaffLogController extends Controller
     public function actionIndex()
     {
         $searchModel = new StaffLogSearch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if(Yii::$app->user->identity->id==Yii::$app->params['SUPER_ADMIN']){
+            $where=[];
+        }else{
+            $where=['s.admin_id'=>Yii::$app->user->identity->id];
+        }
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams(),$where);
         if (Yii::$app->request->post('hasEditable')) {
             $id = Yii::$app->request->post('editableKey');
             $model = StaffLog::findOne(['id' => $id]);

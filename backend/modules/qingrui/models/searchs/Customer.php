@@ -19,7 +19,7 @@ class Customer extends CustomerModel
     public function rules()
     {
         return [
-            [['name','post','sex','status','username','province_id','city_id'], 'safe'],
+            [['name','post','sex','status','username','province_id','city_id','company_name'], 'safe'],
         ];
     }
     /**
@@ -27,17 +27,19 @@ class Customer extends CustomerModel
      * @param  array $params
      * @return \yii\data\ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$where=[])
     {
         $query = CustomerModel::find()
             //->select(['u.username','c.*'])
             ->from(CustomerModel::tableName() . ' c')
-            ->leftJoin(['u'=>'t_admin'],'u.id=c.uid');
+            ->leftJoin(['u'=>'t_admin'],'u.id=c.admin_id');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-
+        if($where){
+            $query->andFilterWhere($where);
+        }
         $sort = $dataProvider->getSort();
         $sort->attributes['c.status'] = [
             'asc' => ['c.status' => SORT_ASC],
@@ -63,6 +65,7 @@ class Customer extends CustomerModel
         $query->andFilterWhere(['c.sex' => $this->sex]);
         $query->andFilterWhere(['c.province_id' => $this->province_id]);
         $query->andFilterWhere(['c.city_id' => $this->city_id]);
+        $query->andFilterWhere(['like', 'c.company_name', $this->company_name]);
         $query->andFilterWhere(['like', 'c.name', $this->name]);
         $query->andFilterWhere(['like', 'c.post', $this->post]);
         $query->andFilterWhere(['like', 'u.username', $this->username]);

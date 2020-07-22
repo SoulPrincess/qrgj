@@ -27,7 +27,7 @@ class StaffLog extends StaffLogModel
      * @param  array $params
      * @return \yii\data\ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$where=[])
     {
         $query = StaffLogModel::find()
             ->from(StaffLogModel::tableName() . ' s')
@@ -37,7 +37,9 @@ class StaffLog extends StaffLogModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-
+        if($where){
+            $query->andFilterWhere($where);
+        }
         $sort = $dataProvider->getSort();
         $sort->attributes['s.status'] = [
             'asc' => ['s.status' => SORT_ASC],

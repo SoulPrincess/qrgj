@@ -6,6 +6,9 @@
  * Time: 11:57
  */
 namespace qingrui\models\searchs;
+use qingrui\models\ResumeProject;
+use qingrui\models\ResumeSchool;
+use qingrui\models\ResumeWork;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -19,7 +22,7 @@ class Resume extends ResumeModel
     public function rules()
     {
         return [
-            [['name','post','sex','username','telphone','current_city','current_company','current_branch','current_post'], 'safe'],
+            [['name','post','sex','username','telphone','current_city','current_company','current_branch','current_post','education'], 'safe'],
         ];
     }
     /**
@@ -27,16 +30,18 @@ class Resume extends ResumeModel
      * @param  array $params
      * @return \yii\data\ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$where=[])
     {
         $query = ResumeModel::find()
             ->from(ResumeModel::tableName() . ' r')
-            ->leftJoin(['u'=>'t_admin'],'u.id=r.uid');
+            ->leftJoin(['u'=>'t_admin'],'u.id=r.admin_id');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-
+        if($where){
+            $query->andFilterWhere($where);
+        }
         $sort = $dataProvider->getSort();
         $sort->attributes['r.updated_at'] = [
             'asc' => ['r.updated_at' => SORT_ASC],
@@ -55,7 +60,19 @@ class Resume extends ResumeModel
         $query->andFilterWhere(['like', 'r.current_company', $this->current_company]);
         $query->andFilterWhere(['like', 'r.current_branch', $this->current_branch]);
         $query->andFilterWhere(['like', 'r.current_post', $this->current_post]);
-
+        return $dataProvider;
+    }
+    /**
+     * 简历教育经历
+     * @param  array $params
+     * @return \yii\data\ActiveDataProvider
+     */
+    public function Resumedetail($where=[])
+    {
+        $school=ResumeSchool::findAll(['resume_id'=>$where['id']]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $school,
+        ]);
         return $dataProvider;
     }
 

@@ -5,12 +5,15 @@ use yii\widgets\ActiveForm;
 use official\models\GuanType;
 use kucha\ueditor\UEditor;
 $this->registerJs($this->render('js/upload.js'));
+if(empty($model->sex)){
+    $model->sex=3;
+}
 ?>
 
 <div class="resume-form create_box">
     <?php $form = ActiveForm::begin(); ?>
 	<?= $form->field($model, 'name')->textInput(['maxlength' => true,'class'=>'layui-input']) ?>
-    <?= $form->field($model, 'sex')->dropDownList(['1'=>'男','2'=>'女','3'=>'未知'],['prompt'=>'请选择性别'])->label('性别') ?>
+    <?= $form->field($model, 'sex')->dropDownList(['1'=>'男','2'=>'女','3'=>'未知'],['prompt'=>'请选择性别试'])->label('性别') ?>
     <?= $form->field($model, 'telphone')->textInput(['class'=>'layui-input search_input'])->label('联系方式') ?>
     <?= $form->field($model, 'wechat_id')->textInput(['class'=>'layui-input search_input'])?>
     <?= $form->field($model, 'email')->textInput(['maxlength' => true,'class'=>'layui-input']) ?>

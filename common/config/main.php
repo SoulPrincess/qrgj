@@ -6,9 +6,6 @@ return [
 //        'cache' => [
 //            'class' => 'yii\caching\FileCache',
 //        ],
-//        'request' => [
-//            'cookieValidationKey' => 'asdasdsaasfasf',
-//        ],
 //
 //		//memcache缓存组件 我们的框架用到了memcache缓存哦，所以需要配置这个
 //		'memcache' => [

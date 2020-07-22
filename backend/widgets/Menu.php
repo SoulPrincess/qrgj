@@ -134,6 +134,8 @@ class Menu extends \yii\widgets\Menu
                     '{show}' => $item['active'] ? "style='display: block'" : '',
                     '{items}' => $this->renderItems($item['items']),
                 ]);
+            }
+            if (!empty($item['url'])) {
                 if (isset($options['class'])) {
                     $options['class'] .= 'layui-nav-item';
                 } else {

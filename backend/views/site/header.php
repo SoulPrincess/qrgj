@@ -13,7 +13,14 @@ use yii\helpers\Url;
 			<ul class="layui-nav top_menu">
 				<li class="layui-nav-item line-h50">
 					<a href="javascript:;">
-						<img src="<?=Yii::$app->user->identity->head_pic?>" class="layui-circle header_user_head_pic" width="30" height="30">
+                        <?php
+                            if(Yii::$app->user->identity->head_pic){
+                                ?>
+                                <img src="<?=Yii::$app->user->identity->head_pic?>" class="layui-circle header_user_head_pic" width="30" height="30">
+                                <?php
+                            }
+                        ?>
+
 						<cite class="header_user_name user-menu"><?=Yii::$app->user->identity->nickname?></cite>
 					</a>
 					<dl class="layui-nav-child top-50">

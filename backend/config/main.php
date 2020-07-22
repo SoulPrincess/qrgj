@@ -9,7 +9,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
-	'name' => '青成集团后台管理',
+	'name' => '青锐国际后台管理',
     'basePath' => dirname(__DIR__),
     'language' => 'zh-CN',//默认语言
     'timeZone' => 'Asia/Shanghai',//默认时区

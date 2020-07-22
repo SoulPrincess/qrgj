@@ -42,8 +42,8 @@ class StaffLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id'], 'required'],
-            [['status','remark','created_at','updated_at'], 'default'],
+//            [['customer_id'], 'required'],
+            [['customer_id','status','remark','created_at','updated_at'], 'default'],
             [['admin_id','username','name'],'safe']
         ];
     }

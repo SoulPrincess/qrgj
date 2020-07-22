@@ -6,6 +6,9 @@
  * Time: 10:59
  */
 namespace qingrui\controllers;
+use qingrui\models\ResumeProject;
+use qingrui\models\ResumeSchool;
+use qingrui\models\ResumeWork;
 use rbac\components\Helper;
 use vendor\tools\OfficeTools;
 use yii\filters\VerbFilter;
@@ -38,7 +41,12 @@ class ResumeController extends Controller
     public function actionIndex()
     {
         $searchModel = new ResumeSearch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if(Yii::$app->user->identity->id==Yii::$app->params['SUPER_ADMIN']){
+            $where=[];
+        }else{
+            $where=['admin_id'=>Yii::$app->user->identity->id];
+        }
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams(),$where);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -336,11 +344,6 @@ class ResumeController extends Controller
                 'msg'=>$msg
             ];
             return json_encode($arr);
-        }else{
-            //下载表格
-            $headerArr = ['姓名', '性别', '联系方式', '微信号', '邮箱', '目前所在城市', '目前所在公司', '目前所在部门', '职位名称', '沟通要点（经验、英文、薪酬地址）'];
-            $fileName = 'excel导入模板';
-//            OfficeTools::excel_export($headerArr, $fileName, []);
         }
     }
 
@@ -351,8 +354,125 @@ class ResumeController extends Controller
     * */
     public function actionResumeView($id)
     {
-        return $this->render('resume-view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Helper::invalidate();
+            return $this->redirect(['resume-view', 'id' => $model->id]);
+        } else {
+            $searchModel = new ResumeSearch;
+            $schoolProvider = $searchModel->Resumedetail(['id'=>$id]);
+            $workmodel=new ResumeWork();
+            $workProvider = $workmodel->Resumework(['id'=>$id]);
+            $projectmodel=new ResumeProject();
+            $projectProvider = $projectmodel->Resumeproject(['id'=>$id]);
+            return $this->render('resume-view', [
+                'model' => $this->findModel($id),
+                'schoolModel' => $schoolProvider,
+                'workModel' => $workProvider,
+                'projectModel' => $projectProvider,
+            ]);
+        }
+    }
+    /*
+   * 教育经历
+   * @author：lhp
+   * @time：2020/6/17
+   * */
+    public function actionResumeUpdate($id)
+    {
+        $model = ResumeSchool::findOne($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Helper::invalidate();
+//            return json_encode(['code'=>200,"msg"=>"保存成功"]);
+            return $this->redirect(['resume-view', 'id' => $model->resume_id]);
+        }
+//        else{
+//            return json_encode(['code'=>100,"msg"=>"保存失败"]);
+//        }
+    }
+
+    /*
+   * 教育经历删除一条
+   * @author：lhp
+   * @time：2020/6/17
+   * */
+    public function actionSchoolDelete($id)
+    {
+        $model = ResumeSchool::findOne($id);
+        if($model->delete()){
+            Helper::invalidate();
+            return json_encode(['code'=>200,"msg"=>"删除成功"]);
+        }else{
+            $errors = $model->firstErrors;
+            return json_encode(['code'=>400,"msg"=>reset($errors)]);
+        }
+    }
+    /*
+* 工作经历
+* @author：lhp
+* @time：2020/6/17
+* */
+    public function actionWorkUpdate($id)
+    {
+        $model = ResumeWork::findOne($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Helper::invalidate();
+//            return json_encode(['code'=>200,"msg"=>"保存成功"]);
+            return $this->redirect(['resume-view', 'id' => $model->resume_id]);
+        }
+//        else{
+//            return json_encode(['code'=>100,"msg"=>"保存失败"]);
+//        }
+    }
+
+    /*
+   * 教育经历删除一条
+   * @author：lhp
+   * @time：2020/6/17
+   * */
+    public function actionWorkDelete($id)
+    {
+        $model = ResumeWork::findOne($id);
+        if($model->delete()){
+            Helper::invalidate();
+            return json_encode(['code'=>200,"msg"=>"删除成功"]);
+        }else{
+            $errors = $model->firstErrors;
+            return json_encode(['code'=>400,"msg"=>reset($errors)]);
+        }
+    }
+    /*
+* 项目经历编辑
+* @author：lhp
+* @time：2020/6/17
+* */
+    public function actionProjectUpdate($id)
+    {
+        $model = ResumeProject::findOne($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Helper::invalidate();
+//            return json_encode(['code'=>200,"msg"=>"保存成功"]);
+            return $this->redirect(['resume-view', 'id' => $model->resume_id]);
+        }
+//        else{
+//            return json_encode(['code'=>100,"msg"=>"保存失败"]);
+//        }
+    }
+
+    /*
+   * 教育经历删除一条
+   * @author：lhp
+   * @time：2020/6/17
+   * */
+    public function actionProjectDelete($id)
+    {
+        $model = ResumeProject::findOne($id);
+        if($model->delete()){
+            Helper::invalidate();
+            return json_encode(['code'=>200,"msg"=>"删除成功"]);
+        }else{
+            $errors = $model->firstErrors;
+            return json_encode(['code'=>400,"msg"=>reset($errors)]);
+        }
     }
 }
