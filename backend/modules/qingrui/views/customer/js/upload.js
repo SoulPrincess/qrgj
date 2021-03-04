@@ -42,7 +42,7 @@ layui.use(['upload','layer','layedit'], function(){
     /*excel导入*/
     upload.render({
         elem: '#goods_import',
-        url: "<?=yii\helpers\Url::to(['/tools/import'])?>",
+        url: "<?=yii\helpers\Url::to(['/customer/import'])?>",
         method: 'post',
         type:'file',
         accept: 'file', //允许上传的文件类型

@@ -9,6 +9,18 @@ LayuiAsset::register($this);
         'model' => $model,
 		'options' => ['class' => 'layui-table'],
         'attributes' => [
+            [
+                'attribute' => 'type',
+                'format' => 'html',
+                'value' => function($model) {
+                    return $model->type==1?'<font color="green">企业客户</font>':($model->type==2?'<font color="gray">个人客户</font>':'<font color="#c55">(未设置)</font>');
+                },
+                'contentOptions' => ['style'=> 'text-align: center;','id'=>'status_1'],
+                'headerOptions' => [
+                    'width' => '10%',
+                    'style'=> 'text-align: center;'
+                ],
+            ],
             'admin.username:text:操作用户',
             'company_name',
             [
@@ -23,10 +35,9 @@ LayuiAsset::register($this);
                     return $str;
                 }
             ],
-            'contract_end',
-            'contract_deadline',
             'name',
             'contact',
+            'telephone',
             'email',
             'post',
             [
@@ -55,6 +66,9 @@ LayuiAsset::register($this);
 //                ],
 //                'label' => '状态',
 //            ],
+            'contract_end',
+            'contract_deadline',
+            ['attribute' => 'remark'],
             ['label'=>'创建时间','value'=>date('Y-m-d H:i:s',$model->created_at)],
             ['label'=>'修改时间','value'=>date('Y-m-d H:i:s',$model->updated_at)],
         ],

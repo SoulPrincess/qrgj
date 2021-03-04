@@ -8,7 +8,7 @@ layui.config({
 	//添加
     $(".layui-default-add").click(function(){
         var index = layui.layer.open({
-            title : "添加客户",
+            title : "添加日志",
             type : 2,
             area: ['80%', '500px'],
             content : ["<?= yii\helpers\Url::to(['create']); ?>"],
@@ -77,7 +77,7 @@ layui.config({
         var href = $(this).attr("href");
         console.log(href);
         var index = layui.layer.open({
-            title : "查看客户",
+            title : "查看日志",
             type: 2,
             area: ['600px', '500px'],
             content : [href],
@@ -89,7 +89,7 @@ layui.config({
         var href = $(this).attr("href");
         console.log(href);
         var index = layui.layer.open({
-            title : "修改客户",
+            title : "修改日志",
             type : 2,
             area: ['80%', '500px'],
             content : [href],
@@ -109,7 +109,7 @@ layui.config({
 
 	$("body").on("click",".layui-default-delete",function(){  //删除
         var href = $(this).attr("href");
-		layer.confirm('确定删除此客户吗？',{icon:3, title:'提示信息'},function(index){
+		layer.confirm('确定删除此日志吗？',{icon:3, title:'提示信息'},function(index){
             $.post(href,function(data){
                 if(data.code===200){
                     layer.msg(data.msg);

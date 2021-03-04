@@ -7,3 +7,4 @@ Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
 Yii::setAlias('@apiimage', '@api/web');
 Yii::setAlias('@wechat', dirname(dirname(__DIR__)) . '/wechat');
 Yii::setAlias('@guan_wechat', dirname(dirname(__DIR__)) . '/guan_wechat');
+Yii::setAlias('@export', '@backend/web/export');//导出的文件

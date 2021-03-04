@@ -15,6 +15,26 @@ return [
     'timeZone' => 'Asia/Shanghai',//默认时区
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'i18n' => [
+        'translations' => [
+            'app*' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@backend/messages',
+                'sourceLanguage' => 'en',
+                'fileMap' => [
+                    'rbac-admin' => 'rbac-admin.php',
+                    'app/error' => 'error.php',
+                ],
+            ],
+            'model*' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@backend/messages',
+                'fileMap' => [
+                    'model' => 'model.php'
+                ]
+            ]
+        ],
+    ],
     'modules' => [
         "rbac" => [        
             'class' => 'rbac\Module',
@@ -120,6 +140,7 @@ return [
             'rbac/user/reset-password'
         ]
     ],
+
     'params' => $params,
 
 ];

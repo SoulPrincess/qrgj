@@ -21,7 +21,7 @@ $this->registerJs($this->render('js/upload.js'));
 	   ],
     ]); ?>
 
-    <?= $form->field($model, 'keyword')->textInput(['class'=>'layui-input search_input','placeholder' =>'公司名称/联系人' ])->label('搜索关键字') ?>
+<!--    --><?//= $form->field($model, 'keyword')->textInput(['class'=>'layui-input search_input','placeholder' =>'公司名称/联系人' ])->label('搜索关键字') ?>
     <?= $form->field($model, 'username')->textInput(['class'=>'layui-input search_input'])->label('操作用户') ?>
     <?= $form->field($model, 'created_at')->widget(\kartik\date\DatePicker::classname(), [
 //    'options' => ['value' => date('Y-m-d',time())],
@@ -33,7 +33,7 @@ $this->registerJs($this->render('js/upload.js'));
             'autoclose'=>true,
             'todayHighlight' => true,
             'format' => 'yyyy-mm-dd',
-        ]]);?>
+        ]])->label('日志时间');?>
 <!--    --><?//= $form->field($model, 'status')->dropDownList(['1'=>'是','2'=>'否'],['prompt'=>'请选择类别','style'=>'display:none;'])->label('状态') ?>
 
     <div class="form-group" style="display:block;">

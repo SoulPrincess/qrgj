@@ -41,8 +41,10 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','company_name'], 'required'],
-            [['post','contract_end','contract_deadline','province_id','city_id'], 'default'],
+//            [['company_name'], 'unique'],
+//            ['company_name', 'unique','message' => '用户名已存在.'],
+            [['name','contact'], 'required'],
+            [['post','contract_end','contract_deadline','province_id','city_id','type','remark','telephone'], 'default'],
             [['status','sex','created_at','updated_at','contact'], 'integer'],
             ['contact','match','pattern'=>'/^[1][34578][0-9]{9}$/'],
             ['email','match','pattern'=>'/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/'],
@@ -72,6 +74,9 @@ class Customer extends \yii\db\ActiveRecord
             'username' => '用户名称',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
+            'telephone' => '固定电话',
+            'remark' => '备注',
+            'type' => '类别',
         ];
     }
 
@@ -128,5 +133,33 @@ class Customer extends \yii\db\ActiveRecord
             ->all();
         $data_list = yii\helpers\ArrayHelper::map($data, 'id', 'company_name');
         return $data_list;
+    }
+
+  /*客户导入查重
+  *@author:LHP
+  * @time:2020-10-10
+  * */
+    public function customerRepeat()
+    {
+        $data = self::find()
+            ->select(['company_name','contact'])
+            ->orderBy('updated_at desc')
+            ->asArray()
+            ->all();
+        foreach ($data as $v) {//商品名称
+            $result['company_name'][] = $v['company_name'];
+            $result['contact'][] = $v['contact'];
+        }
+        return $result;
+    }
+    /*
+ * 优化时间戳
+ * @time:2020-10-12
+ * @author:lhp
+ * */
+    public function Time($time){
+        if(!empty($time)){
+            return Date('Y-m-d H:i:s',$time);
+        }
     }
 }

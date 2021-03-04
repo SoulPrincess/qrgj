@@ -9,4 +9,5 @@ return [
     'adminEmail' => 'lhp123456l@163.com',
     'supportEmail' => 'lhp123456l@163.com',
     'user.passwordResetTokenExpire' => 3600,
+    'dns_url'=>'http://www.qrgj.com/',
 ];

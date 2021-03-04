@@ -4,7 +4,7 @@ use yii\helpers\Url;
 <div class="layui-header blog-header header height-50">
 	<div class="layui-main">
 		<div class="header-logo">
-			<a href="#" class="logo">青锐猎头后台</a>
+			<a href="#" class="logo">CRM管理后台</a>
 			<!-- 显示/隐藏菜单 -->
 			<a href="javascript:;" class="menu_header iconfont hideMenu icon-menufold "></a>
 		</div>
@@ -21,7 +21,7 @@ use yii\helpers\Url;
                             }
                         ?>
 
-						<cite class="header_user_name user-menu"><?=Yii::$app->user->identity->nickname?></cite>
+						<cite class="header_user_name user-menu"><?=Yii::$app->user->identity->nickname.'-'.Yii::$app->user->identity->username?></cite>
 					</a>
 					<dl class="layui-nav-child top-50">
 						<dd><a href="javascript:;" class="changeSkin"><i class="iconfont icon-yifu userMenu"></i><cite>换肤</cite></a></dd>

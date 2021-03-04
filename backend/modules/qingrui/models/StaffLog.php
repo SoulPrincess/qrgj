@@ -42,8 +42,9 @@ class StaffLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-//            [['customer_id'], 'required'],
-            [['customer_id','status','remark','created_at','updated_at'], 'default'],
+//            [['content','status'], 'required'],
+            [['customer_id','status','remark','created_at','updated_at','content'], 'default'],
+            [['total','pass','no_pass'],'integer'],
             [['admin_id','username','name'],'safe']
         ];
     }
@@ -59,10 +60,14 @@ class StaffLog extends \yii\db\ActiveRecord
             'customer_id' => '客户id',
             'username' => '操作者姓名',
             'name' => '客户姓名',
-            'status' => '状态',
-            'remark' => '工作内容',
+            'status' => '意向度',
+            'remark' => '备注',
+            'content' => '沟通详情（沟通详情及下一步跟进计划）',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
+            'total' => '沟通总数',
+            'pass' => '通过人数',
+            'no_pass' => '未通过人数',
         ];
     }
 

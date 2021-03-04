@@ -31,6 +31,18 @@ $this->registerJs($this->render('js/index.js'));
 				'headerOptions' => ['width'=>'50','style'=> 'text-align: center;'],
 				'contentOptions' => ['style'=> 'text-align: center;']
 			],
+            [
+                'attribute' => 'type',
+                'format' => 'html',
+                'value' => function($model) {
+                    return $model->type==1?'<font color="green">企业客户</font>':($model->type==2?'<font color="gray">个人客户</font>':'<font color="#c55">(未设置)</font>');
+                },
+                'contentOptions' => ['style'=> 'text-align: center;','id'=>'status_1'],
+                'headerOptions' => [
+                    'width' => '10%',
+                    'style'=> 'text-align: center;'
+                ],
+            ],
             'company_name',
             [
                 'attribute'=>'province',
@@ -46,6 +58,7 @@ $this->registerJs($this->render('js/index.js'));
             ],
             'name',
             'contact',
+            'telephone',
             'email',
             'post',
             [
@@ -61,8 +74,9 @@ $this->registerJs($this->render('js/index.js'));
                 ],
                 'label' => '性别',
             ],
-            'contract_end',
-            'contract_deadline',
+            'remark',
+//            'contract_end',
+//            'contract_deadline',
 //            [
 //                'attribute' => 'status',
 //                'format' => 'html',

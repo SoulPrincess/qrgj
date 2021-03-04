@@ -4,8 +4,8 @@ layui.config({
 	    var form = layui.form,
 		layer = parent.layer === undefined ? layui.layer : parent.layer,
 		$ = layui.jquery;
-    
-	//添加
+
+    //添加
     $(".layui-default-add").click(function(){
         var index = layui.layer.open({
             title : "添加客户",

@@ -59,6 +59,9 @@ class StaffLog extends StaffLogModel
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+        if(Yii::$app->user->identity->id!=Yii::$app->params['SUPER_ADMIN']){
+            $query->andFilterWhere(['s.admin_id'=>Yii::$app->user->identity->id]);
+        }
         $begin_time=strtotime($this->created_at);
         $end_time=strtotime($this->created_at)+ 24 * 60 * 60  - 1;
         $query->andFilterWhere(['s.id' => $this->id]);
